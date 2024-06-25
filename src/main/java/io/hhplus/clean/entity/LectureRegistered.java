@@ -18,6 +18,6 @@ public class LectureRegistered {
 
     private int registered; // 등록 학생 수
 
-    private Long createdAt;
+    private Long createdAt; // 등록일
 
 }

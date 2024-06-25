@@ -1,6 +1,7 @@
 package io.hhplus.clean.controller;
 
 import io.hhplus.clean.dto.HistoryDTO;
+import io.hhplus.clean.dto.LectureRegisteredDTO;
 import io.hhplus.clean.service.EnrolmentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +17,10 @@ public class EnrolmentController {
     }
 
     @PostMapping("/lectures/apply")
-    public HistoryDTO apply(@RequestBody HistoryDTO historyDTO) {
+    public LectureRegisteredDTO apply(@RequestBody HistoryDTO historyDTO) {
 
-        HistoryDTO resHistoryDTO = enrolmentService.apply(historyDTO);
-        return resHistoryDTO;
+        LectureRegisteredDTO reqLectureRegisteredDTO = enrolmentService.apply(historyDTO);
+        return reqLectureRegisteredDTO;
     }
 
 }

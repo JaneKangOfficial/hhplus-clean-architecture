@@ -1,5 +1,6 @@
-package io.hhplus.clean.repository;
+package io.hhplus.clean.repository.lectureregistered;
 
+import io.hhplus.clean.dto.LectureRegisteredDTO;
 import io.hhplus.clean.entity.LectureRegistered;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,8 +8,10 @@ import org.springframework.data.jpa.repository.Lock;
 
 import java.util.Optional;
 
-public interface LectureRegisteredRepository extends JpaRepository<LectureRegistered, Long> {
+public interface LectureRegisteredJpaRepository extends JpaRepository<LectureRegistered, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<LectureRegistered> findByLectureId(Long lectureId);
+
+    LectureRegisteredDTO findAllByLectureIdOrderByIdDesc(Long lectureId);
 }

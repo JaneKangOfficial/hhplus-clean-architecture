@@ -1,13 +1,17 @@
 package io.hhplus.clean.service;
 
 import io.hhplus.clean.dto.HistoryDTO;
+import io.hhplus.clean.dto.LectureRegisteredDTO;
 import io.hhplus.clean.entity.History;
 import io.hhplus.clean.entity.Lecture;
 import io.hhplus.clean.entity.LectureRegistered;
 import io.hhplus.clean.entity.TransactionStatus;
-import io.hhplus.clean.repository.HistoryRepository;
-import io.hhplus.clean.repository.LectureRegisteredRepository;
-import io.hhplus.clean.repository.LectureRepository;
+import io.hhplus.clean.repository.history.HistoryJpaRepository;
+import io.hhplus.clean.repository.history.HistoryRepository;
+import io.hhplus.clean.repository.lecture.LectureRepository;
+import io.hhplus.clean.repository.lectureregistered.LectureRegisteredJpaRepository;
+import io.hhplus.clean.repository.lectureregistered.LectureRegisteredRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,17 +21,25 @@ import java.util.Optional;
 public class EnrolmentService {
 
     private HistoryRepository historyRepository;
+    private HistoryJpaRepository historyJpaRepository;
     private LectureRepository lectureRepository;
     private LectureRegisteredRepository lectureRegisteredRepository;
+    private LectureRegisteredJpaRepository lectureRegisteredJpaRepository;
 
-    public EnrolmentService(HistoryRepository historyRepository, LectureRepository lectureRepository, LectureRegisteredRepository lectureRegisteredRepository) {
+    @Autowired
+    public EnrolmentService(HistoryRepository historyRepository, HistoryJpaRepository historyJpaRepository
+            , LectureRepository lectureRepository
+            , LectureRegisteredRepository lectureRegisteredRepository
+            , LectureRegisteredJpaRepository lectureRegisteredJpaRepository) {
         this.historyRepository = historyRepository;
+        this.historyJpaRepository = historyJpaRepository;
         this.lectureRepository = lectureRepository;
         this.lectureRegisteredRepository = lectureRegisteredRepository;
+        this.lectureRegisteredJpaRepository = lectureRegisteredJpaRepository;
     }
 
     @Transactional
-    public HistoryDTO apply(HistoryDTO historyDTO) {
+    public LectureRegisteredDTO apply(HistoryDTO historyDTO) {
 
         Optional<History> history = historyRepository.findByStudentIdAndLectureId(historyDTO.studentId(), historyDTO.lectureId());
         if (history.isPresent()) {
@@ -49,16 +61,18 @@ public class EnrolmentService {
         }
 
         lectureRegistered.setRegistered(lectureRegistered.getRegistered() + 1);
-        lectureRegisteredRepository.save(lectureRegistered);
+        lectureRegisteredJpaRepository.save(lectureRegistered);
 
         History historyEntity = new History();
         historyEntity.setStudentId(historyDTO.studentId());
         historyEntity.setLectureId(historyDTO.lectureId());
         historyEntity.setStatus(TransactionStatus.APPLY);
         historyEntity.setAppliedAt(System.currentTimeMillis());
-        historyRepository.save(historyEntity);
+        historyJpaRepository.save(historyEntity);
 
-        return new HistoryDTO(historyEntity.getId(), historyEntity.getStudentId(), historyEntity.getLectureId(), historyEntity.getStatus(), historyEntity.getAppliedAt());
+        LectureRegisteredDTO resLectureRegisteredDTO = lectureRegisteredRepository.findAllByLectureIdOrderByIdDesc(historyDTO.lectureId());
+
+        return resLectureRegisteredDTO;
 
     }
 }
