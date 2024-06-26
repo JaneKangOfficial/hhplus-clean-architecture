@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class LectureRegistered {
+public class LectureRegistered {    // 신청자 수 테이블
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

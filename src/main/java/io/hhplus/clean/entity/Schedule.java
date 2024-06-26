@@ -8,13 +8,15 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Lecture {      // 특강 테이블
+public class Schedule {     // 특강 일정 테이블
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    private String title;   // 강의명
+    private long lectureId;
 
-    private Long teacherId;
+    private int capacity; // 정원
+
+    private Long startAt; // 시작일
 }
