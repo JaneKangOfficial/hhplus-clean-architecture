@@ -1,0 +1,25 @@
+package io.hhplus.clean.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Data;
+
+import java.time.LocalDate;
+
+@Entity
+@Data
+public class LectureRegistered {    // 신청자 수 테이블
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long scheduleId;
+
+    private int registered; // 등록 학생 수
+
+    private LocalDate createdAt; // 등록일
+
+}
