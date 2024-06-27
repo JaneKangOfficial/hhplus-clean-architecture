@@ -18,12 +18,12 @@ public class LectureRegisteredRepositoryImpl implements LectureRegisteredReposit
     }
 
     @Override
-    public Optional<LectureRegistered> findByLectureId(Long lectureId) {
-        return lectureRegisteredJpaRepository.findByLectureId(lectureId);
+    public Optional<LectureRegistered> findByScheduleId(Long scheduleId) {
+        return lectureRegisteredJpaRepository.findByScheduleId(scheduleId);
     }
 
     @Override
-    public LectureRegisteredDTO findAllByLectureIdOrderByIdDesc(Long lectureId) {
-        return lectureRegisteredJpaRepository.findAllByLectureIdOrderByIdDesc(lectureId);
+    public LectureRegisteredDTO findAllByScheduleIdOrderByIdDesc(Long scheduleId) {
+        return lectureRegisteredJpaRepository.findAllByScheduleIdOrderByIdDesc(scheduleId);
     }
 }

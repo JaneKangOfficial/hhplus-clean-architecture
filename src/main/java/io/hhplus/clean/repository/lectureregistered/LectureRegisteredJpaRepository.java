@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface LectureRegisteredJpaRepository extends JpaRepository<LectureRegistered, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    Optional<LectureRegistered> findByLectureId(Long lectureId);
+    Optional<LectureRegistered> findByScheduleId(Long scheduleId);
 
-    LectureRegisteredDTO findAllByLectureIdOrderByIdDesc(Long lectureId);
+    LectureRegisteredDTO findAllByScheduleIdOrderByIdDesc(Long scheduleId);
 }

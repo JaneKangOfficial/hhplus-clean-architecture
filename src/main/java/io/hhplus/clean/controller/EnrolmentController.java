@@ -1,13 +1,10 @@
-package io.hhplus.clean;
+package io.hhplus.clean.controller;
 
 import io.hhplus.clean.dto.HistoryDTO;
 import io.hhplus.clean.dto.LectureDTO;
 import io.hhplus.clean.dto.LectureRegisteredDTO;
 import io.hhplus.clean.service.EnrolmentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,16 +44,20 @@ public class EnrolmentController {
      **/
     @GetMapping("/")
     public List<LectureDTO> list() {
-        List<LectureDTO> lectureDTO = enrolmentService.list();
-        return lectureDTO;
+        List<LectureDTO> lectureDTOList = enrolmentService.list();
+        return lectureDTOList;
     }
 
     /**
-     **(기본)** 특강 신청 완료 여부 조회 API **`GET /lectures/application/{userId}`**
-
-     - 특정 userId 로 특강 신청 완료 여부를 조회하는 API 를 작성합니다.
-     - 특강 신청에 성공한 사용자는 성공했음을, 특강 등록자 명단에 없는 사용자는 실패했음을 반환합니다. (true, false)
+     * *(기본)** 특강 신청 완료 여부 조회 API **`GET /lectures/application/{userId}`**
+     * <p>
+     * - 특정 userId 로 특강 신청 완료 여부를 조회하는 API 를 작성합니다.
+     * - 특강 신청에 성공한 사용자는 성공했음을, 특강 등록자 명단에 없는 사용자는 실패했음을 반환합니다. (true, false)
      **/
-//    @GetMapping("/lectures/application")
+    @GetMapping("/application/{studentId}")
+    public List<HistoryDTO> status(@PathVariable("studentId") Long studentId) {
+        List<HistoryDTO> historyDTOList = enrolmentService.status(studentId);
+        return historyDTOList;
+    }
 
 }

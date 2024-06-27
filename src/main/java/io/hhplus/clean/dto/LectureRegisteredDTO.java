@@ -1,12 +1,14 @@
 package io.hhplus.clean.dto;
 
+import java.time.LocalDate;
+
 public record LectureRegisteredDTO(
         Long id,
 
-        Long lectureId,
+        Long scheduleId,
 
         int registered, // 등록 학생 수
 
-        Long createdAt // 등록일
+        LocalDate createdAt // 등록일
 ) {
 }

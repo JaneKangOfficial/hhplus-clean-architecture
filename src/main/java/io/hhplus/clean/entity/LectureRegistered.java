@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 public class LectureRegistered {    // 신청자 수 테이블
@@ -14,10 +16,10 @@ public class LectureRegistered {    // 신청자 수 테이블
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long lectureId;
+    private Long scheduleId;
 
     private int registered; // 등록 학생 수
 
-    private Long createdAt; // 등록일
+    private LocalDate createdAt; // 등록일
 
 }

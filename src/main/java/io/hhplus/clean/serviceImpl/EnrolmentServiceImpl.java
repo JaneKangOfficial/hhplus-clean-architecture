@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,18 +46,18 @@ public class EnrolmentServiceImpl implements EnrolmentService {
     @Transactional
     public LectureRegisteredDTO apply(HistoryDTO historyDTO) {
 
-        Optional<History> history = historyRepository.findByStudentIdAndLectureId(historyDTO.studentId(), historyDTO.lectureId());
+        Optional<History> history = historyRepository.findByStudentIdAndScheduleId(historyDTO.studentId(), historyDTO.scheduleId());
         if (history.isPresent()) {
             throw new IllegalStateException("이미 신청한 특강입니다.");
         }
 
-        Lecture lecture = lectureRepository.findById(historyDTO.lectureId())
+        Lecture lecture = lectureRepository.findById(historyDTO.scheduleId())
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 특강입니다."));
 
-        LectureRegistered lectureRegistered = lectureRegisteredRepository.findByLectureId(historyDTO.lectureId())
+        LectureRegistered lectureRegistered = lectureRegisteredRepository.findByScheduleId(historyDTO.scheduleId())
                 .orElseGet(() -> {
                     LectureRegistered newLectureRegistered = new LectureRegistered();
-                    newLectureRegistered.setId(historyDTO.lectureId());
+                    newLectureRegistered.setScheduleId(historyDTO.scheduleId());
                     newLectureRegistered.setRegistered(0);
                     return newLectureRegistered;
                 });
@@ -69,12 +70,12 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 
         History historyEntity = new History();
         historyEntity.setStudentId(historyDTO.studentId());
-        historyEntity.setLectureId(historyDTO.lectureId());
+        historyEntity.setScheduleId(historyDTO.scheduleId());
         historyEntity.setStatus(TransactionStatus.APPLY);
-        historyEntity.setAppliedAt(System.currentTimeMillis());
+        historyEntity.setAppliedAt(LocalDate.now());
         historyJpaRepository.save(historyEntity);   // 신청 내역 저장
 
-        LectureRegisteredDTO resLectureRegisteredDTO = lectureRegisteredRepository.findAllByLectureIdOrderByIdDesc(historyDTO.lectureId());
+        LectureRegisteredDTO resLectureRegisteredDTO = lectureRegisteredRepository.findAllByScheduleIdOrderByIdDesc(historyDTO.scheduleId());
 
         return resLectureRegisteredDTO;
 
@@ -92,6 +93,21 @@ public class EnrolmentServiceImpl implements EnrolmentService {
 
         return lectureDTOList;
 
+    }
+
+    @Transactional
+    public List<HistoryDTO> status(Long studentId) {
+        List<History> historyList = historyRepository.findByStudentId(studentId);
+
+        if (historyList.isEmpty()) {
+            throw new IllegalStateException("신청한 특강이 없습니다.");
+        }
+
+        List<HistoryDTO> historyDTOList = historyList.stream()
+                .map(history -> new HistoryDTO(history))
+                .collect(Collectors.toList());
+
+        return historyDTOList;
 
     }
 }

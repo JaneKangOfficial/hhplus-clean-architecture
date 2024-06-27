@@ -1,6 +1,9 @@
 package io.hhplus.clean.dto;
 
+import io.hhplus.clean.entity.History;
 import io.hhplus.clean.entity.TransactionStatus;
+
+import java.time.LocalDate;
 
 public record HistoryDTO(
 
@@ -8,10 +11,19 @@ public record HistoryDTO(
 
         Long studentId,
 
-        Long lectureId,
+        Long scheduleId,
 
         TransactionStatus status,
 
-        Long appliedAt
+        LocalDate appliedAt
 ) {
+    public HistoryDTO(History history) {
+        this(
+                history.getId(),
+                history.getStudentId(),
+                history.getScheduleId(),
+                history.getStatus(),
+                history.getAppliedAt()
+        );
+    }
 }

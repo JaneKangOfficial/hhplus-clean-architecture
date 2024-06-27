@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface LectureRegisteredRepository {
 
-    Optional<LectureRegistered> findByLectureId(Long lectureId);
+    Optional<LectureRegistered> findByScheduleId(Long scheduleId);
 
-    LectureRegisteredDTO findAllByLectureIdOrderByIdDesc(Long aLong);
+    LectureRegisteredDTO findAllByScheduleIdOrderByIdDesc(Long scheduleId);
 }

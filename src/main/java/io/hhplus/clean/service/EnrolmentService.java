@@ -11,4 +11,6 @@ public interface EnrolmentService {
     LectureRegisteredDTO apply(HistoryDTO historyDTO);
 
     List<LectureDTO> list();
+
+    List<HistoryDTO> status(Long studentId);
 }

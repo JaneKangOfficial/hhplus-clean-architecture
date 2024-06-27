@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 public class Schedule {     // 특강 일정 테이블
@@ -18,5 +20,5 @@ public class Schedule {     // 특강 일정 테이블
 
     private int capacity; // 정원
 
-    private Long startAt; // 시작일
+    private LocalDate startAt; // 시작일
 }
